@@ -1,0 +1,62 @@
+Prompt:
+
+Create and execute a Jupyter notebook named sales_etl_pipeline.ipynb that implements a complete multi-source ETL pipeline in Python using pandas, numpy, and matplotlib. Structure it with a markdown cell explaining each phase followed by a code cell implementing it:
+
+Setup
+
+Import pandas, numpy, os, datetime, matplotlib.
+If sales.csv, customers.csv, products.csv aren't found in the working directory, auto-generate small synthetic sample datasets (e.g. 1000 sales rows, 40 customers, 15 products) so the notebook can run end-to-end for demonstration. Simulate the real-world issue where UnitPrice is missing for all sales rows.
+
+Phase 1 – Extract
+
+Load the three sources (or synthetic fallback) into sales_extracted_df, customers_extracted_df, products_extracted_df.
+Log each extraction step to an etl_logs list.
+
+Phase 2 – Transform (Sales)
+
+Function transform_sales_data(df) returning (transformed_df, report_dict, rejected_records_list).
+Standardize column names to snake_case, fix order_date dtype.
+Do not reject rows for missing unit_price — keep as NaN for later enrichment from products data.
+Only reject rows for missing order_id.
+Compute sales_amount/total_price (NaN if unit_price is NaN).
+
+Phase 3 – Data Quality Check
+
+Function perform_sales_data_quality_checks(df): missing values, duplicate order_id, cardinality of key IDs, dtype confirmation. Explicitly flag missing unit_price/sales_amount/total_price as expected, not an error.
+
+Phase 4 – Transform (Customers & Products)
+
+Same standardization approach for customers and products data.
+
+Phase 5 – Integration
+
+Join sales with products on product_id to enrich missing unit_price, recompute sales_amount.
+Join in customer data to build analytics_df.
+Guard each join with NameError checks if a required dataframe is missing.
+
+Phase 6 – Data Modeling (Star Schema)
+
+dim_date: continuous date range from min/max order date, with date_key, year/month/day/day_of_week/quarter.
+dim_customer, dim_product: each with a surrogate key.
+fact_sales: sales joined to surrogate keys, with date_key, customer_key, product_key, quantity, unit_price, sales_amount, total_price.
+
+Phase 7 – Business Analysis
+
+Total sales, total quantity, total orders, unique customers.
+Monthly sales trend (sales_by_month) grouped by order_date period.
+
+Phase 8 – Visualization
+
+Line plot of monthly sales trend with matplotlib (labeled axes, rotated x-ticks, grid).
+
+Phase 9 – Load
+
+Save analytics_df, cleaned customers/products, and all dim/fact tables as CSVs to ./etl_output/.
+
+Phase 10 – Validation
+
+Row-count and referential-integrity checks (extract vs transform counts, no missing unit_price after enrichment, no missing customer_key/product_key in fact_sales) — report PASS/WARNING per check in a dataframe.
+
+Phase 11 – Final Summary
+
+Print a full run summary: extract counts → transform/rejected counts → integration rows → dim/fact table sizes → business metrics → validation pass/warn count → output directory.
