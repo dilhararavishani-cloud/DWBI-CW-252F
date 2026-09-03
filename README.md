@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# GAHDSE252F-001
+# GAHDSE252F-011
 # Sri Lankan A/L Examination Results Analysis
 
 A Python-based data processing and cleaning pipeline for analyzing Sri Lankan G.C.E. Advanced Level (A/L) examination results dataset containing over 337,000 candidate records.
@@ -139,4 +138,3 @@ Reads the raw CSV file into a pandas DataFrame and previews its structure.
 This project is for academic/educational purposes as part of coursework (GAHDSE252F-001).
 =======
 # DWBI-CW-252F
->>>>>>> 76e29117461628af646ebf5bca27ac425b60a93a
